@@ -37,20 +37,36 @@ export default function Faq() {
   };
   
   return (
-    <section id="faq" className="section bg-dark-light">
-      <div className="container mx-auto">
+    <section id="faq" className="section relative overflow-hidden">
+      {/* 背景装饰 */}
+      <div className="absolute inset-0 grid-bg opacity-30"></div>
+      <div className="absolute top-0 left-0 w-1/3 h-1/3 bg-accent/10 rounded-full filter blur-[100px]"></div>
+      <div className="absolute bottom-0 right-0 w-1/3 h-1/3 bg-primary/10 rounded-full filter blur-[100px]"></div>
+      
+      <div className="container mx-auto relative z-10">
         <div className="text-center mb-16">
-          <motion.h2 
-            className="section-title"
+          <motion.span
+            className="inline-block px-4 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
             常见问题
+          </motion.span>
+          
+          <motion.h2 
+            className="text-4xl md:text-5xl font-bold mb-6"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            有疑问？<span className="gradient-text">我们来解答</span>
           </motion.h2>
+          
           <motion.p 
-            className="section-subtitle"
+            className="text-xl text-light/70 max-w-3xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -73,14 +89,14 @@ export default function Faq() {
               <button 
                 className={`w-full text-left p-6 rounded-lg flex justify-between items-center transition-all ${
                   openIndex === index 
-                    ? 'bg-dark-lighter shadow-lg' 
-                    : 'bg-dark-light hover:bg-dark-lighter'
+                    ? 'bg-gradient-to-r from-primary/10 to-secondary/10 shadow-lg border border-white/5' 
+                    : 'bg-dark-light/50 hover:bg-dark-lighter/50 border border-transparent'
                 }`}
                 onClick={() => toggleFaq(index)}
               >
                 <span className="font-semibold text-lg">{faq.question}</span>
                 <ChevronDownIcon 
-                  className={`w-5 h-5 transition-transform ${openIndex === index ? 'transform rotate-180' : ''}`} 
+                  className={`w-5 h-5 transition-transform ${openIndex === index ? 'transform rotate-180 text-primary' : 'text-light/50'}`} 
                 />
               </button>
               
@@ -89,7 +105,7 @@ export default function Faq() {
                   openIndex === index ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
                 }`}
               >
-                <div className="p-6 pt-2 text-light/70">
+                <div className="p-6 pt-2 text-light/70 bg-dark-lighter/30 rounded-b-lg border-t-0 border border-white/5">
                   {faq.answer}
                 </div>
               </div>
@@ -104,12 +120,20 @@ export default function Faq() {
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.5 }}
         >
-          <p className="text-light/70 mb-6">
-            还有其他问题？请联系我们的客户支持团队
-          </p>
-          <button className="btn btn-outline">
-            联系支持
-          </button>
+          <div className="glass-effect p-10 rounded-2xl max-w-2xl mx-auto border border-white/5">
+            <h3 className="text-2xl font-semibold mb-6">还有其他问题？</h3>
+            <p className="text-light/70 mb-8">
+              如果您有任何其他问题，请随时联系我们的客户支持团队，我们将竭诚为您服务。
+            </p>
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <button className="btn btn-primary">
+                联系支持
+              </button>
+              <button className="btn btn-outline">
+                查看文档
+              </button>
+            </div>
+          </div>
         </motion.div>
       </div>
     </section>

@@ -18,9 +18,9 @@ module.exports = {
           light: '#ff9df2'
         },
         dark: {
-          DEFAULT: '#121212',
-          light: '#1e1e1e',
-          lighter: '#2a2a2a'
+          DEFAULT: '#0a0a0a',
+          light: '#121212',
+          lighter: '#1a1a1a'
         },
         light: {
           DEFAULT: '#f8f9fa',
@@ -33,10 +33,24 @@ module.exports = {
         }
       },
       fontFamily: {
-        sans: ['Montserrat', 'sans-serif']
+        sans: ['Inter', 'sans-serif']
       },
       backgroundImage: {
         'gradient-primary': 'linear-gradient(135deg, var(--tw-colors-primary), var(--tw-colors-secondary))'
+      },
+      animation: {
+        'float': 'float 6s ease-in-out infinite',
+        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+      },
+      keyframes: {
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' },
+        }
+      },
+      boxShadow: {
+        'glow': '0 0 15px rgba(108, 68, 252, 0.5)',
+        'glow-lg': '0 0 30px rgba(108, 68, 252, 0.5)',
       }
     },
   },

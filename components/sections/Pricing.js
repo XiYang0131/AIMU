@@ -18,7 +18,8 @@ export default function Pricing() {
         "社区支持"
       ],
       cta: "免费开始",
-      highlighted: false
+      highlighted: false,
+      gradient: "from-gray-800/50 to-gray-900/50"
     },
     {
       name: "专业版",
@@ -35,7 +36,8 @@ export default function Pricing() {
         "批量生成功能"
       ],
       cta: "选择专业版",
-      highlighted: true
+      highlighted: true,
+      gradient: "from-primary/20 to-secondary/20"
     },
     {
       name: "企业版",
@@ -52,65 +54,86 @@ export default function Pricing() {
         "商业授权"
       ],
       cta: "联系销售",
-      highlighted: false
+      highlighted: false,
+      gradient: "from-accent/20 to-accent-dark/20"
     }
   ];
   
   return (
-    <section id="pricing" className="section bg-dark-light">
-      <div className="container mx-auto">
+    <section id="pricing" className="section relative overflow-hidden">
+      {/* 背景装饰 */}
+      <div className="absolute inset-0 grid-bg opacity-30"></div>
+      <div className="absolute top-0 left-0 w-1/3 h-1/3 bg-primary/10 rounded-full filter blur-[100px]"></div>
+      <div className="absolute bottom-0 right-0 w-1/3 h-1/3 bg-secondary/10 rounded-full filter blur-[100px]"></div>
+      
+      <div className="container mx-auto relative z-10">
         <div className="text-center mb-16">
-          <motion.h2 
-            className="section-title"
+          <motion.span
+            className="inline-block px-4 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            价格方案
+            灵活定价
+          </motion.span>
+          
+          <motion.h2 
+            className="text-4xl md:text-5xl font-bold mb-6"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            选择<span className="gradient-text">适合您</span>的方案
           </motion.h2>
+          
           <motion.p 
-            className="section-subtitle"
+            className="text-xl text-light/70 max-w-3xl mx-auto mb-10"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            选择最适合你需求的方案，开启AI音乐创作之旅
+            我们提供灵活的价格方案，满足从个人创作者到专业工作室的各种需求
           </motion.p>
           
-          <div className="flex justify-center mb-12">
-            <div className="bg-dark-lighter rounded-full p-1 inline-flex">
-              <button 
-                className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${isAnnual ? 'bg-primary text-white' : 'text-light/70'}`}
-                onClick={() => setIsAnnual(true)}
-              >
-                年付
-                {isAnnual && <span className="ml-2 bg-green-500 text-white text-xs px-2 py-0.5 rounded-full">省20%</span>}
-              </button>
-              <button 
-                className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${!isAnnual ? 'bg-primary text-white' : 'text-light/70'}`}
-                onClick={() => setIsAnnual(false)}
-              >
-                月付
-              </button>
-            </div>
-          </div>
+          <motion.div 
+            className="inline-flex items-center p-1 mb-10 rounded-full bg-dark-lighter"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
+            <button 
+              className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${isAnnual ? 'bg-primary text-white shadow-glow' : 'text-light/70'}`}
+              onClick={() => setIsAnnual(true)}
+            >
+              年付
+              {isAnnual && <span className="ml-2 text-xs bg-white/20 px-2 py-0.5 rounded-full">省20%</span>}
+            </button>
+            <button 
+              className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${!isAnnual ? 'bg-primary text-white shadow-glow' : 'text-light/70'}`}
+              onClick={() => setIsAnnual(false)}
+            >
+              月付
+            </button>
+          </motion.div>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {plans.map((plan, index) => (
             <motion.div 
               key={index}
-              className={`card p-8 ${plan.highlighted ? 'border-primary/30 relative overflow-hidden' : ''}`}
+              className={`card p-8 bg-gradient-to-br ${plan.gradient} border-none ${plan.highlighted ? 'shadow-glow-lg scale-105 z-10' : ''}`}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
               {plan.highlighted && (
-                <div className="absolute top-0 right-0 bg-primary text-white text-xs font-bold px-3 py-1 transform translate-x-2 -translate-y-0 rotate-45 origin-bottom-left">
-                  推荐
+                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-primary text-white text-xs font-bold px-4 py-1 rounded-full shadow-glow">
+                  最受欢迎
                 </div>
               )}
               <h3 className="text-xl font-semibold mb-2">{plan.name}</h3>
@@ -123,17 +146,17 @@ export default function Pricing() {
               <ul className="space-y-3 mb-8">
                 {plan.features.map((feature, i) => (
                   <li key={i} className="flex items-start">
-                    <CheckIcon className="w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                    <CheckIcon className={`w-5 h-5 mr-2 flex-shrink-0 mt-0.5 ${plan.highlighted ? 'text-primary' : 'text-green-500'}`} />
                     <span>{feature}</span>
                   </li>
                 ))}
               </ul>
               
               <button 
-                className={`w-full py-3 px-6 rounded-lg font-medium transition-all ${
+                className={`w-full py-3 px-6 rounded-xl font-medium transition-all ${
                   plan.highlighted 
-                    ? 'bg-primary hover:bg-primary-dark text-white' 
-                    : 'bg-dark-lighter hover:bg-dark text-white'
+                    ? 'bg-primary hover:bg-primary-dark text-white shadow-glow hover:shadow-glow-lg' 
+                    : 'bg-dark-lighter hover:bg-dark text-white hover:shadow-lg'
                 }`}
               >
                 {plan.cta}
@@ -143,7 +166,7 @@ export default function Pricing() {
         </div>
         
         <motion.div 
-          className="mt-20 text-center max-w-4xl mx-auto bg-gradient-to-r from-primary/20 to-secondary/20 rounded-2xl p-10"
+          className="mt-20 text-center max-w-4xl mx-auto bg-gradient-to-r from-primary/10 to-secondary/10 rounded-2xl p-10 backdrop-blur-sm border border-white/5"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}

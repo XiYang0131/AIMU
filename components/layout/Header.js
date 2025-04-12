@@ -1,92 +1,134 @@
 import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { Bars3Icon, XMarkIcon, MoonIcon, SunIcon } from '@heroicons/react/24/outline';
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [currentLang, setCurrentLang] = useState('zh');
   
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 10);
     };
     
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
   
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const toggleTheme = () => setIsDarkMode(!isDarkMode);
   const toggleLanguage = () => setCurrentLang(currentLang === 'zh' ? 'en' : 'zh');
+  
+  const navLinks = [
+    { name: "功能", href: "#features" },
+    { name: "工作原理", href: "#how-it-works" },
+    { name: "定价", href: "#pricing" },
+    { name: "API", href: "#api-integration" },
+    { name: "常见问题", href: "#faq" }
+  ];
   
   return (
     <header 
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-        isScrolled ? 'py-4 bg-dark/95 backdrop-blur-md' : 'py-6 bg-dark/80'
+        isScrolled ? 'py-3 bg-dark-lighter/80 backdrop-blur-lg shadow-lg' : 'py-5 bg-transparent'
       }`}
     >
-      <div className="container mx-auto px-4 flex justify-between items-center">
-        <div className="flex items-center">
+      <div className="container mx-auto px-4">
+        <div className="flex justify-between items-center">
           <Link href="/" className="flex items-center">
             <span className="text-2xl font-bold gradient-text">SonicAI</span>
           </Link>
-        </div>
-        
-        <nav className={`fixed md:relative top-0 ${isMenuOpen ? 'right-0' : '-right-full'} md:right-0 h-screen md:h-auto w-3/4 md:w-auto bg-dark-light md:bg-transparent transition-all duration-300 md:transition-none z-50 md:z-auto flex flex-col md:flex-row items-start md:items-center p-8 md:p-0`}>
-          <button 
-            className="md:hidden absolute top-4 right-4 text-white"
-            onClick={toggleMenu}
-          >
-            <XMarkIcon className="w-6 h-6" />
-          </button>
           
-          <ul className="flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-8 mt-12 md:mt-0">
-            <li><Link href="#hero" className="text-white hover:text-primary transition-colors">{currentLang === 'zh' ? '首页' : 'Home'}</Link></li>
-            <li><Link href="#features" className="text-white hover:text-primary transition-colors">{currentLang === 'zh' ? '功能' : 'Features'}</Link></li>
-            <li><Link href="#how-it-works" className="text-white hover:text-primary transition-colors">{currentLang === 'zh' ? '工作原理' : 'How It Works'}</Link></li>
-            <li><Link href="#pricing" className="text-white hover:text-primary transition-colors">{currentLang === 'zh' ? '价格' : 'Pricing'}</Link></li>
-            <li><Link href="#testimonials" className="text-white hover:text-primary transition-colors">{currentLang === 'zh' ? '用户评价' : 'Testimonials'}</Link></li>
-            <li><Link href="#faq" className="text-white hover:text-primary transition-colors">{currentLang === 'zh' ? '常见问题' : 'FAQ'}</Link></li>
-          </ul>
-        </nav>
-        
-        <div className="flex items-center space-x-4">
-          <button 
-            onClick={toggleTheme}
-            className="p-2 rounded-full hover:bg-dark-lighter transition-colors"
-          >
-            {isDarkMode ? (
-              <SunIcon className="w-5 h-5 text-white" />
-            ) : (
-              <MoonIcon className="w-5 h-5 text-white" />
-            )}
-          </button>
+          <nav className="hidden md:flex items-center space-x-8">
+            {navLinks.map(link => (
+              <Link 
+                key={link.name}
+                href={link.href}
+                className="text-light/80 hover:text-primary transition-colors"
+              >
+                {link.name}
+              </Link>
+            ))}
+          </nav>
+          
+          <div className="hidden md:flex items-center space-x-4">
+            <Link href="#" className="text-light/80 hover:text-primary transition-colors">
+              登录
+            </Link>
+            <Link 
+              href="#" 
+              className="btn btn-primary py-2 px-4"
+            >
+              免费注册
+            </Link>
+          </div>
           
           <button 
-            onClick={toggleLanguage}
-            className="px-3 py-1 rounded-full border border-white/20 text-sm font-medium hover:bg-dark-lighter transition-colors"
+            className="md:hidden text-light/80 hover:text-primary"
+            onClick={() => setIsMobileMenuOpen(true)}
           >
-            {currentLang === 'zh' ? 'EN' : '中文'}
+            <Bars3Icon className="w-6 h-6" />
           </button>
-          
-          <button 
-            className="md:hidden"
-            onClick={toggleMenu}
-          >
-            <Bars3Icon className="w-6 h-6 text-white" />
-          </button>
-          
-          <Link href="#api-integration" className="hidden md:block btn btn-primary">
-            {currentLang === 'zh' ? '立即体验' : 'Try Now'}
-          </Link>
         </div>
       </div>
+      
+      {/* 移动端菜单 */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div 
+            className="fixed inset-0 bg-dark z-50 md:hidden"
+            initial={{ opacity: 0, x: '100%' }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: '100%' }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+          >
+            <div className="flex justify-end p-4">
+              <button 
+                className="text-light/80 hover:text-primary"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <XMarkIcon className="w-6 h-6" />
+              </button>
+            </div>
+            
+            <div className="flex flex-col items-center mt-10 space-y-6">
+              {navLinks.map(link => (
+                <Link 
+                  key={link.name}
+                  href={link.href}
+                  className="text-xl text-light/80 hover:text-primary transition-colors"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {link.name}
+                </Link>
+              ))}
+              
+              <div className="pt-6 mt-6 border-t border-white/10 w-full flex flex-col items-center space-y-4">
+                <Link 
+                  href="#" 
+                  className="text-xl text-light/80 hover:text-primary transition-colors"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  登录
+                </Link>
+                <Link 
+                  href="#" 
+                  className="btn btn-primary w-40 text-center"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  免费注册
+                </Link>
+              </div>
+            </div>
+            
+            {/* 背景装饰 */}
+            <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-primary/10 rounded-full filter blur-[100px] pointer-events-none"></div>
+            <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-secondary/10 rounded-full filter blur-[100px] pointer-events-none"></div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 } 
