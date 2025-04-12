@@ -10,12 +10,17 @@ module.exports = {
         primary: {
           DEFAULT: '#6c44fc',
           dark: '#5a35e0',
-          light: '#8c6aff'
+          light: '#8a6aff'
         },
         secondary: {
           DEFAULT: '#ff7eee',
-          dark: '#e55fd0',
-          light: '#ff9df2'
+          dark: '#e55dd0',
+          light: '#ffa2f3'
+        },
+        accent: {
+          DEFAULT: '#44cafc',
+          dark: '#2bb3e7',
+          light: '#6ad5ff'
         },
         dark: {
           DEFAULT: '#0a0a0a',
@@ -23,13 +28,9 @@ module.exports = {
           lighter: '#1a1a1a'
         },
         light: {
-          DEFAULT: '#f8f9fa',
-          dark: '#e9ecef'
-        },
-        accent: {
-          DEFAULT: '#00e5ff',
-          dark: '#00c8e0',
-          light: '#4eeeff'
+          DEFAULT: '#ffffff',
+          dark: '#f0f0f0',
+          darker: '#e0e0e0'
         }
       },
       fontFamily: {
